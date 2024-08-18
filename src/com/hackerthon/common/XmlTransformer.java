@@ -38,7 +38,7 @@ public class XmlTransformer extends ConfigurationLoader {
 
     static {
         try {
-            properties.load(XmlTransformer.class.getResourceAsStream("/configure.properties"));
+            properties.load(XmlTransformer.class.getResourceAsStream(Constants.CONFIGURE_PROPERTIES_PATH));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error loading properties file", e);
             throw new RuntimeException(e);
@@ -50,9 +50,9 @@ public class XmlTransformer extends ConfigurationLoader {
      */
     public static void requestTransform() {
         try {
-            Source xmlSource = new StreamSource(new File(properties.getProperty("xmlSourcePath")));
-            Source xsltSource = new StreamSource(new File(properties.getProperty("xsltSourcePath")));
-            Result outputResult = new StreamResult(new File(properties.getProperty("outputResultPath")));
+            Source xmlSource = new StreamSource(new File(properties.getProperty(XmlConstants.XML_SOURCE_PATH)));
+            Source xsltSource = new StreamSource(new File(properties.getProperty(XmlConstants.XSLT_SOURCE_PATH)));
+            Result outputResult = new StreamResult(new File(properties.getProperty(XmlConstants.OUTPUT_RESULT_PATH)));
             TransformerFactory.newInstance().newTransformer(xsltSource).transform(xmlSource, outputResult);
         } catch (TransformerException e) {
             LOGGER.log(Level.SEVERE, "Error during XML transformation", e);
@@ -67,7 +67,7 @@ public class XmlTransformer extends ConfigurationLoader {
     public static ArrayList<Map<String, String>> extractXmlData() {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(properties.getProperty("responseXmlPath"));
+                    .parse(properties.getProperty(XmlConstants.RESPONSE_XML_PATH));
             XPath xPath = XPathFactory.newInstance().newXPath();
             NodeList nodeList = (NodeList) xPath.compile("//Employees/Employee").evaluate(document,
                     XPathConstants.NODESET);

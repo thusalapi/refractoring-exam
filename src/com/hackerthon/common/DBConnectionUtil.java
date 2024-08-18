@@ -3,8 +3,9 @@ package com.hackerthon.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
+import com.hackerthon.common.ConfigureLoader;
 
-public class DBConnectionUtil {
+public class DBConnectionUtil extends ConfigureLoader {
 
     private static DBConnectionUtil instance;
     private Connection connection;
@@ -12,8 +13,6 @@ public class DBConnectionUtil {
     private DBConnectionUtil() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Properties properties = new Properties();
-            properties.load(getClass().getResourceAsStream("/db.properties"));
             connection = DriverManager.getConnection(properties.getProperty("url"), properties.getProperty("username"),
                     properties.getProperty("password"));
         } catch (Exception e) {
