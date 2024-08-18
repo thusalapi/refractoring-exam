@@ -1,9 +1,9 @@
 package com.hackerthon.common;
 
 /**
- * Class containing constants for XPath parameters.
+ * Class containing CommonConstants for XPath parameters.
  */
-public class XmlConstants {
+public class CommonConstants {
     public static final String XPATH_EMPLOYEE_ID_KEY = "XpathEmployeeIDKey";
     public static final String XPATH_EMPLOYEE_NAME_KEY = "XpathEmployeeNameKey";
     public static final String XPATH_EMPLOYEE_ADDRESS_KEY = "XpathEmployeeAddressKey";
@@ -18,5 +18,12 @@ public class XmlConstants {
     public static final String XSLT_SOURCE_PATH = "xsltSourcePath";
     public static final String OUTPUT_RESULT_PATH = "outputResultPath";
     public static final String RESPONSE_XML_PATH = "responseXmlPath";
+
+    public static final String EMPLOYEE_ID = "employeeId";
+    public static final String EMPLOYEE_NAME = "employeeName";
+    public static final String EMPLOYEE_ADDRESS = "employeeAddress";
+    public static final String FACULTY_NAME = "facultyName";
+    public static final String DEPARTMENT = "department";
+    public static final String DESIGNATION = "designation";
 
 }
