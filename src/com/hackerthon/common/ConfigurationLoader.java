@@ -10,16 +10,15 @@ import java.util.Properties;
  */
 public class ConfigurationLoader {
 
-    private static final Logger LOGGER = Logger.getLogger(Clitu.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ConfigurationLoader.class.getName());
     public static final Properties configProperties = new Properties();
 
     static {
         try {
-            configProperties.load(QueryLoader.class.getResourceAsStream("/config/config.properties"));
+            configProperties.load(ConfigurationLoader.class.getResourceAsStream(Constants.CONFIG_FILE_PATH));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load configuration properties", e);
         }
-
     }
 
     // Private constructor to prevent instantiation
