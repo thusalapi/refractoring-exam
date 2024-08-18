@@ -2,19 +2,27 @@ package com.hackerthon.services;
 
 import java.util.ArrayList;
 
-public interface EmployeeService {
-    void loadEmployeesFromXml();
+public abstract class EmployeeServiceTemplate {
 
-    void createEmployeeTable();
+    protected abstract void loadEmployeesFromXml();
 
-    void saveEmployees();
+    protected abstract void createEmployeeTable();
 
-    void getEmployeeById(String employeeId);
+    protected abstract void saveEmployees();
 
-    void deleteEmployee(String employeeId);
+    protected abstract void getEmployeeById(String employeeId);
 
-    void displayAllEmployees();
+    protected abstract void deleteEmployee(String employeeId);
 
-    void displayEmployees(ArrayList<Y> employeeList);
+    protected abstract void displayAllEmployees();
 
+    protected abstract void displayEmployees(ArrayList<Y> employeeList);
+
+    // Template method
+    public final void manageEmployees() {
+        loadEmployeesFromXml();
+        createEmployeeTable();
+        saveEmployees();
+        displayAllEmployees();
+    }
 }

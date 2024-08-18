@@ -5,27 +5,23 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import com.hackerthon.common.XmlTransformer;
-
-import k.l.m.EmployeeService;
+import com.hackerthon.services.EmployeeServiceImpl;
 
 public class ExecuteMain {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
 
-		EmployeeService employeeService = new EmployeeService();
-		try {
-			XmlTransformer.requestTransform();
-			employeeService.employeesFromXml();
-			employeeService.employeeTableCreate();
-			employeeService.ddasEeyolpme();
-			employeeService.employeeDisplay();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
+        try {
+            XmlTransformer.requestTransform();
+            employeeService.manageEmployees();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	}
+    }
 
 }

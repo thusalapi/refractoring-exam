@@ -58,8 +58,8 @@ public class EmployeeServiceImpl extends ConfigurationLoader implements Employee
     public void createEmployeeTable() {
         try {
             statement = connection.createStatement();
-            statement.executeUpdate(Qlitu.Q("q2"));
-            statement.executeUpdate(Qlitu.Q("q1"));
+            statement.executeUpdate(QueryLoader.getQueryById("q2"));
+            statement.executeUpdate(QueryLoader.getQueryById("q1"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class EmployeeServiceImpl extends ConfigurationLoader implements Employee
     @Override
     public void saveEmployees() {
         try {
-            preparedStatement = connection.prepareStatement(Qlitu.Q("q3"));
+            preparedStatement = connection.prepareStatement(QueryLoader.getQueryById("q3"));
             connection.setAutoCommit(false);
             for (Y employee : employees) {
                 preparedStatement.setString(1, employee.getEmployeeId());
@@ -90,7 +90,7 @@ public class EmployeeServiceImpl extends ConfigurationLoader implements Employee
     public void getEmployeeById(String employeeId) {
         Y employee = new Y();
         try {
-            preparedStatement = connection.prepareStatement(Qlitu.Q("q4"));
+            preparedStatement = connection.prepareStatement(QueryLoader.getQueryById("q4"));
             preparedStatement.setString(1, employeeId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -112,7 +112,7 @@ public class EmployeeServiceImpl extends ConfigurationLoader implements Employee
     @Override
     public void deleteEmployee(String employeeId) {
         try {
-            preparedStatement = connection.prepareStatement(Qlitu.Q("q6"));
+            preparedStatement = connection.prepareStatement(QueryLoader.getQueryById("q6"));
             preparedStatement.setString(1, employeeId);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
@@ -124,7 +124,7 @@ public class EmployeeServiceImpl extends ConfigurationLoader implements Employee
     public void displayAllEmployees() {
         ArrayList<Y> employeeList = new ArrayList<>();
         try {
-            preparedStatement = connection.prepareStatement(Qlitu.Q("q5"));
+            preparedStatement = connection.prepareStatement(QueryLoader.getQueryById("q5"));
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Y employee = new Y();

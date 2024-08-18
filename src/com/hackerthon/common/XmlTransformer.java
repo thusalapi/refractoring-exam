@@ -7,6 +7,8 @@ import java.util.Map;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.xml.sax.SAXException;
@@ -30,81 +32,91 @@ import java.util.logging.Logger;
  */
 public class XmlTransformer extends ConfigurationLoader {
 
-	private static final Logger LOGGER = Logger.getLogger(XmlTransformer.class.getName());
-	private static final ArrayList<Map<String, String>> employeeDataList = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(XmlTransformer.class.getName());
+    private static final ArrayList<Map<String, String>> employeeDataList = new ArrayList<>();
+    private static Properties properties = new Properties();
 
-	/**
-	 * Transforms the XML using the specified XSLT.
-	 */
-	public static void requestTransform() {
-		try {
-			Source xmlSource = new StreamSource(new File("src/b/c/d/EmployeeRequest.xml"));
-			Source xsltSource = new StreamSource(new File("src/b/c/d/Employee-modified.xsl"));
-			Result outputResult = new StreamResult(new File("src/b/c/d/EmployeeResponse.xml"));
-			TransformerFactory.newInstance().newTransformer(xsltSource).transform(xmlSource, outputResult);
-		} catch (TransformerException e) {
-			LOGGER.log(Level.SEVERE, "Error during XML transformation", e);
-		}
-	}
+    static {
+        try {
+            properties.load(XmlTransformer.class.getResourceAsStream("/configure.properties"));
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error loading properties file", e);
+            throw new RuntimeException(e);
+        }
+    }
 
-	/**
-	 * Extracts data from the transformed XML using XPath.
-	 * 
-	 * @return List of maps containing employee data.
-	 */
-	public static ArrayList<Map<String, String>> extractXmlData() {
-		try {
-			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-					.parse("src/b/c/d/EmployeeResponse.xml");
-			XPath xPath = XPathFactory.newInstance().newXPath();
-			NodeList nodeList = (NodeList) xPath.compile("//Employees/Employee").evaluate(document,
-					XPathConstants.NODESET);
-			List<Element> elements = toElementList(nodeList);
+    /**
+     * Transforms the XML using the specified XSLT.
+     */
+    public static void requestTransform() {
+        try {
+            Source xmlSource = new StreamSource(new File("src/b/c/d/EmployeeRequest.xml"));
+            Source xsltSource = new StreamSource(new File("src/b/c/d/Employee-modified.xsl"));
+            Result outputResult = new StreamResult(new File("src/b/c/d/EmployeeResponse.xml"));
+            TransformerFactory.newInstance().newTransformer(xsltSource).transform(xmlSource, outputResult);
+        } catch (TransformerException e) {
+            LOGGER.log(Level.SEVERE, "Error during XML transformation", e);
+        }
+    }
 
-			for (Element element : elements) {
-				Map<String, String> employeeData = new HashMap<>();
-				employeeData.put("employeeId",
-						(String) xPath.compile("EmployeeID/text()").evaluate(element, XPathConstants.STRING));
-				employeeData.put("employeeName",
-						(String) xPath.compile("EmployeeFullName/text()").evaluate(element, XPathConstants.STRING));
-				employeeData.put("employeeAddress",
-						(String) xPath.compile("EmployeeFullAddress/text()").evaluate(element, XPathConstants.STRING));
-				employeeData.put("facultyName",
-						(String) xPath.compile("FacultyName/text()").evaluate(element, XPathConstants.STRING));
-				employeeData.put("department",
-						(String) xPath.compile("Department/text()").evaluate(element, XPathConstants.STRING));
-				employeeData.put("designation",
-						(String) xPath.compile("Designation/text()").evaluate(element, XPathConstants.STRING));
-				employeeDataList.add(employeeData);
-			}
-		} catch (ParserConfigurationException e) {
-			LOGGER.log(Level.SEVERE, "Parser configuration error while parsing the XML file", e);
-			throw new RuntimeException(e);
-		} catch (SAXException e) {
-			LOGGER.log(Level.SEVERE, "SAX error while parsing the XML file", e);
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "IO error while parsing the XML file", e);
-			throw new RuntimeException(e);
-		} catch (XPathExpressionException e) {
-			LOGGER.log(Level.SEVERE, "XPath expression error while parsing the XML file", e);
-			throw new RuntimeException(e);
-		}
-		return employeeDataList;
-	}
+    /**
+     * Extracts data from the transformed XML using XPath.
+     * 
+     * @return List of maps containing employee data.
+     */
+    public static ArrayList<Map<String, String>> extractXmlData() {
+        try {
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                    .parse("src/b/c/d/EmployeeResponse.xml");
+            XPath xPath = XPathFactory.newInstance().newXPath();
+            NodeList nodeList = (NodeList) xPath.compile("//Employees/Employee").evaluate(document,
+                    XPathConstants.NODESET);
+            List<Element> elements = toElementList(nodeList);
 
-	/**
-	 * Converts a NodeList to a List of Elements.
-	 * 
-	 * @param nodeList
-	 *                     The NodeList to convert.
-	 * @return A List of Elements.
-	 */
-	private static List<Element> toElementList(NodeList nodeList) {
-		List<Element> elements = new ArrayList<>();
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			elements.add((Element) nodeList.item(i));
-		}
-		return elements;
-	}
+            for (Element element : elements) {
+                Map<String, String> employeeData = new HashMap<>();
+                employeeData.put("employeeId",
+                        (String) xPath.compile(properties.getProperty("XpathEmployeeIDKey")).evaluate(element, XPathConstants.STRING));
+                employeeData.put("employeeName",
+                        (String) xPath.compile(properties.getProperty("XpathEmployeeNameKey")).evaluate(element, XPathConstants.STRING));
+                employeeData.put("employeeAddress",
+                        (String) xPath.compile(properties.getProperty("XpathEmployeeAddressKey")).evaluate(element, XPathConstants.STRING));
+                employeeData.put("facultyName",
+                        (String) xPath.compile(properties.getProperty("XpathFacultyNameKey")).evaluate(element, XPathConstants.STRING));
+                employeeData.put("department",
+                        (String) xPath.compile(properties.getProperty("XpathDepartmentKey")).evaluate(element, XPathConstants.STRING));
+                employeeData.put("designation",
+                        (String) xPath.compile(properties.getProperty("XpathDesignationKey")).evaluate(element, XPathConstants.STRING));
+                employeeDataList.add(employeeData);
+            }
+        } catch (ParserConfigurationException e) {
+            LOGGER.log(Level.SEVERE, "Parser configuration error while parsing the XML file", e);
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            LOGGER.log(Level.SEVERE, "SAX error while parsing the XML file", e);
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "IO error while parsing the XML file", e);
+            throw new RuntimeException(e);
+        } catch (XPathExpressionException e) {
+            LOGGER.log(Level.SEVERE, "XPath expression error while parsing the XML file", e);
+            throw new RuntimeException(e);
+        }
+        return employeeDataList;
+    }
+
+    /**
+     * Converts a NodeList to a List of Elements.
+     * 
+     * @param nodeList
+     *                     The NodeList to convert.
+     * @return A List of Elements.
+     */
+    private static List<Element> toElementList(NodeList nodeList) {
+        List<Element> elements = new ArrayList<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            elements.add((Element) nodeList.item(i));
+        }
+        return elements;
+    }
 }
