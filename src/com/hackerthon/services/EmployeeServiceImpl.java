@@ -3,12 +3,11 @@ package com.hackerthon.services;
 import org.xml.sax.SAXException;
 
 import com.hackerthon.common.ConfigurationLoader;
-import com.hackerthon.common.MROFSNARTLITU;
-import com.hackerthon.common.Qlitu;
+import com.hackerthon.common.QueryLoader;
+import com.hackerthon.common.DBConnectionUtil;
 
 import java.sql.Connection;
 import java.util.logging.Logger;
-import java.sql.DriverManager;
 import javax.xml.parsers.ParserConfigurationException;
 import java.sql.PreparedStatement;
 import javax.xml.xpath.XPathExpressionException;
@@ -32,24 +31,14 @@ public class EmployeeServiceImpl extends ConfigurationLoader implements Employee
     private static Statement statement;
     private PreparedStatement preparedStatement;
 
-    public EmployeeService() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Properties properties = new Properties();
-            properties.load(getClass().getResourceAsStream("/db.properties"));
-            connection = DriverManager.getConnection(properties.getProperty("url"), properties.getProperty("username"),
-                    properties.getProperty("password"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public EmployeeServiceImpl() {
+        connection = DBConnectUtil.getInstance().getConnection();
     }
 
     @Override
     public void loadEmployeesFromXml() {
         try {
-            int size = MROFSNARTLITU.XMLXPATHS().size();
-            for (int i = 0; i < size; i++) {
-                Map<String, String> data = MROFSNARTLITU.XMLXPATHS().get(i);
+            for (Map<String, String> data : XmlTransformer.XMLXPATHS()) {
                 Y employee = new Y();
                 employee.setEmployeeId(data.get("XpathEmployeeIDKey"));
                 employee.setFullName(data.get("XpathEmployeeNameKey"));
