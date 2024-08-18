@@ -25,7 +25,7 @@ public class QueryLoader extends ConfigureLoader {
     public NodeList loadQueries() {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(new File(properties.getProperty(XmlConstants.EMPLOYEE_QUERY_PATH)));
+                    .parse(new File(properties.getProperty(CommonConstants.EMPLOYEE_QUERY_PATH)));
             return document.getElementsByTagName("query");
         } catch (ParserConfigurationException e) {
             LOGGER.log(Level.SEVERE, "Parser configuration error while parsing the XML file", e);

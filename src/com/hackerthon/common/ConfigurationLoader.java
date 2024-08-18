@@ -15,7 +15,7 @@ public class ConfigurationLoader {
 
     static {
         try {
-            configProperties.load(ConfigurationLoader.class.getResourceAsStream(Constants.CONFIG_FILE_PATH));
+            configProperties.load(ConfigurationLoader.class.getResourceAsStream(CommonConstants.CONFIG_FILE_PATH));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load configuration properties", e);
         }

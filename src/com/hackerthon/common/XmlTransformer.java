@@ -50,9 +50,9 @@ public class XmlTransformer extends ConfigurationLoader {
      */
     public static void requestTransform() {
         try {
-            Source xmlSource = new StreamSource(new File(properties.getProperty(XmlConstants.XML_SOURCE_PATH)));
-            Source xsltSource = new StreamSource(new File(properties.getProperty(XmlConstants.XSLT_SOURCE_PATH)));
-            Result outputResult = new StreamResult(new File(properties.getProperty(XmlConstants.OUTPUT_RESULT_PATH)));
+            Source xmlSource = new StreamSource(new File(properties.getProperty(Constants.XML_SOURCE_PATH)));
+            Source xsltSource = new StreamSource(new File(properties.getProperty(Constants.XSLT_SOURCE_PATH)));
+            Result outputResult = new StreamResult(new File(properties.getProperty(Constants.OUTPUT_RESULT_PATH)));
             TransformerFactory.newInstance().newTransformer(xsltSource).transform(xmlSource, outputResult);
         } catch (TransformerException e) {
             LOGGER.log(Level.SEVERE, "Error during XML transformation", e);
@@ -67,7 +67,7 @@ public class XmlTransformer extends ConfigurationLoader {
     public static ArrayList<Map<String, String>> extractXmlData() {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(properties.getProperty(XmlConstants.RESPONSE_XML_PATH));
+                    .parse(properties.getProperty(Constants.RESPONSE_XML_PATH));
             XPath xPath = XPathFactory.newInstance().newXPath();
             NodeList nodeList = (NodeList) xPath.compile("//Employees/Employee").evaluate(document,
                     XPathConstants.NODESET);
@@ -75,18 +75,18 @@ public class XmlTransformer extends ConfigurationLoader {
 
             for (Element element : elements) {
                 Map<String, String> employeeData = new HashMap<>();
-                employeeData.put("employeeId",
-                        (String) xPath.compile(properties.getProperty(XmlConstants.XPATH_EMPLOYEE_ID_KEY)).evaluate(element, XPathConstants.STRING));
-                employeeData.put("employeeName",
-                        (String) xPath.compile(properties.getProperty(XmlConstants.XPATH_EMPLOYEE_NAME_KEY)).evaluate(element, XPathConstants.STRING));
-                employeeData.put("employeeAddress",
-                        (String) xPath.compile(properties.getProperty(XmlConstants.XPATH_EMPLOYEE_ADDRESS_KEY)).evaluate(element, XPathConstants.STRING));
-                employeeData.put("facultyName",
-                        (String) xPath.compile(properties.getProperty(XmlConstants.XPATH_FACULTY_NAME_KEY)).evaluate(element, XPathConstants.STRING));
-                employeeData.put("department",
-                        (String) xPath.compile(properties.getProperty(XmlConstants.XPATH_DEPARTMENT_KEY)).evaluate(element, XPathConstants.STRING));
-                employeeData.put("designation",
-                        (String) xPath.compile(properties.getProperty(XmlConstants.XPATH_DESIGNATION_KEY)).evaluate(element, XPathConstants.STRING));
+                employeeData.put(CommonConstants.EMPLOYEE_ID,
+                        (String) xPath.compile(properties.getProperty(CommonConstants.XPATH_EMPLOYEE_ID_KEY)).evaluate(element, XPathConstants.STRING));
+                employeeData.put(CommonConstants.EMPLOYEE_NAME,
+                        (String) xPath.compile(properties.getProperty(CommonConstants.XPATH_EMPLOYEE_NAME_KEY)).evaluate(element, XPathConstants.STRING));
+                employeeData.put(CommonConstants.EMPLOYEE_ADDRESS,
+                        (String) xPath.compile(properties.getProperty(CommonConstants.XPATH_EMPLOYEE_ADDRESS_KEY)).evaluate(element, XPathConstants.STRING));
+                employeeData.put(CommonConstants.FACULTY_NAME,
+                        (String) xPath.compile(properties.getProperty(CommonConstants.XPATH_FACULTY_NAME_KEY)).evaluate(element, XPathConstants.STRING));
+                employeeData.put(CommonConstants.DEPARTMENT,
+                        (String) xPath.compile(properties.getProperty(CommonConstants.XPATH_DEPARTMENT_KEY)).evaluate(element, XPathConstants.STRING));
+                employeeData.put(CommonConstants.DESIGNATION,
+                        (String) xPath.compile(properties.getProperty(CommonConstants.XPATH_DESIGNATION_KEY)).evaluate(element, XPathConstants.STRING));
                 employeeDataList.add(employeeData);
             }
         } catch (ParserConfigurationException e) {
