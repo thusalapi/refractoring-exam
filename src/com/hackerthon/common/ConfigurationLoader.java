@@ -15,7 +15,7 @@ public class ConfigurationLoader {
 
     static {
         try {
-            configProperties.load(Qlitu.class.getResourceAsStream("/config/config.properties"));
+            configProperties.load(QueryLoader.class.getResourceAsStream("/config/config.properties"));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load configuration properties", e);
         }
