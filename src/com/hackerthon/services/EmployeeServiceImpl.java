@@ -36,16 +36,16 @@ public class EmployeeServiceImpl extends ConfigurationLoader implements Employee
     }
 
     @Override
-    public void loadEmployeesFromXml() {
+       public void loadEmployeesFromXml() {
         try {
-            for (Map<String, String> data : XmlTransformer.XMLXPATHS()) {
+            for (Map<String, String> data : XmlTransformer.extractXmlData()) {
                 Y employee = new Y();
-                employee.setEmployeeId(data.get("XpathEmployeeIDKey"));
-                employee.setFullName(data.get("XpathEmployeeNameKey"));
-                employee.setAddress(data.get("XpathEmployeeAddressKey"));
-                employee.setFacultyName(data.get("XpathFacultyNameKey"));
-                employee.setDepartment(data.get("XpathDepartmentKey"));
-                employee.setDesignation(data.get("XpathDesignationKey"));
+                employee.setEmployeeId(data.get(XmlConstants.XPATH_EMPLOYEE_ID_KEY));
+                employee.setFullName(data.get(XmlConstants.XPATH_EMPLOYEE_NAME_KEY));
+                employee.setAddress(data.get(XmlConstants.XPATH_EMPLOYEE_ADDRESS_KEY));
+                employee.setFacultyName(data.get(XmlConstants.XPATH_FACULTY_NAME_KEY));
+                employee.setDepartment(data.get(XmlConstants.XPATH_DEPARTMENT_KEY));
+                employee.setDesignation(data.get(XmlConstants.XPATH_DESIGNATION_KEY));
                 employees.add(employee);
                 System.out.println(employee.toString() + "\n");
             }

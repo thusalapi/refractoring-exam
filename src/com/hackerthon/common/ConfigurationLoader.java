@@ -19,10 +19,10 @@ public class ConfigurationLoader {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load configuration properties", e);
         }
-            // Private constructor to prevent instantiation
 
     }
-    
+
+    // Private constructor to prevent instantiation
     private ConfigurationLoader() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
