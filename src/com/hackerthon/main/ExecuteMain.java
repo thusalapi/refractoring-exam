@@ -1,11 +1,12 @@
-package i.j.k;
+package com.hackerthon.main;
 
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
-import g.h.i.MROFSNARTLITU;
-import k.l.m.EcIVresPMeTEG;
+import com.hackerthon.common.XmlTransformer;
+
+import k.l.m.EmployeeService;
 
 public class ExecuteMain {
 
@@ -14,9 +15,9 @@ public class ExecuteMain {
 	 */
 	public static void main(String[] args) {
 
-		EcIVresPMeTEG employeeService = new EcIVresPMeTEG();
+		EmployeeService employeeService = new EmployeeService();
 		try {
-			MROFSNARTLITU.requestTransform();
+			XmlTransformer.requestTransform();
 			employeeService.employeesFromXml();
 			employeeService.employeeTableCreate();
 			employeeService.ddasEeyolpme();

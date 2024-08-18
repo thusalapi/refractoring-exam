@@ -1,4 +1,4 @@
-package j.k.l;
+package com.hackerthon.model;
 
 /**
  * Class representing an Employee.
